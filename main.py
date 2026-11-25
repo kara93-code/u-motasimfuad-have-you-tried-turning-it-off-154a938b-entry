@@ -9,6 +9,7 @@ The gate needs 1-199 characters, a single line, UTF-8 text.
 """
 
 import os
+import sys
 
 SUPPORT_LINE = (
     "Good news \u2014 I found the problem: your laptop is haunted. "
@@ -32,13 +33,15 @@ def checked_line():
 
 
 def main():
+    line = checked_line()
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR")
     if not out_dir:
         raise SystemExit("MAKEFUN_OUTPUT_DIR is not set")
     target = os.path.join(out_dir, "entry.txt")
     with open(target, "w", encoding="utf-8") as handle:
-        handle.write(checked_line())
+        handle.write(line)
     os.chmod(target, 0o644)
+    print("wrote entry.txt (%d characters)" % len(line), file=sys.stderr)
 
 
 if __name__ == "__main__":
